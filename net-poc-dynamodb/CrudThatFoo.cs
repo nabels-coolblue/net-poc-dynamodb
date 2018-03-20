@@ -28,6 +28,21 @@ namespace net_poc_dynamodb
                 });
 
             Console.WriteLine("Read back the following data: " + loadedAutomation);
+
+            Console.WriteLine("Deleting the data..");
+            context.Delete(automation);
+            Console.WriteLine("Data has been deleted");
+
+            Console.WriteLine("Verifying that data has been deleted");
+            Automation deletedAutomation = context.Load<Automation>(automation.ProductGroupId,
+                automation.ProductTypeId,
+                new DynamoDBOperationConfig
+                {
+                    ConsistentRead = true
+                });
+
+            if (deletedAutomation == null)
+                Console.WriteLine("Data has been deleted");
         }
     }
 }
